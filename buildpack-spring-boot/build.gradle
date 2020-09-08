@@ -1,0 +1,65 @@
+plugins {
+    id 'org.springframework.boot' version '2.3.3.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.10.RELEASE'
+    id 'java'
+}
+
+group = 'com.bbb.ko.study'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    compileOnly 'org.projectlombok:lombok'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
+
+bootBuildImage {
+    /**
+     * command-line : --builder
+     * description : Build an image from a Dockerfile
+     */
+    builder="gcr.io/paketo-buildpacks/builder:tiny"
+    /**
+     * command-line : --runImage
+     * description : Name of the run image to use.
+     */
+    runImage="gcr.io/paketo-buildpacks/builder:tiny"
+    /**
+     * command-line : --imageName
+     * description : Image name for the generated image.
+     */
+    imageName="docker.io/library/${project.name}:${project.version}"
+    /**
+     * description : Environment variables that should be passed to the builder.
+     */
+//    environment=""
+
+    /**
+     * description : Whether to clean the cache before building.
+     */
+//    cleanCache=""
+    /**
+     * description : Enables verbose logging of builder operations.
+     */
+//    verboseLogging=false
+
+}
